@@ -7,6 +7,7 @@ int hsh(info_t *info, char **av)
 
         while (r != -1 && builtin_ret != -2)
         {
+                int i;
                 initializeInfo(info);
                 if (checkInteractiveMode(info))
                         printString("$ ");
@@ -15,9 +16,12 @@ int hsh(info_t *info, char **av)
                 if (r != -1)
                 {
                         configureInfo(info, av);
-                        builtin_ret = find_builtin_command(info);
-                        if (builtin_ret == -1)
+                        for (i = 0; i < 3; i++)
+                        {
+                            builtin_ret = find_builtin_command(info);
+                            if (builtin_ret == -1)
                                 find_shell_command(info);
+                        }
                 }
                 else if (checkInteractiveMode(info))
                         putCharacter('\n');
