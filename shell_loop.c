@@ -111,13 +111,10 @@ void fork_shell_command(info_t *info)
         if (child_pid == 0)
         {
                 if (execve(info->path, info->argv, fetchEnvironment(info)) == -1)
-                {
-                        releaseInfo(info, 1);
-                        if (errno == EACCES)
-                                exit(126);
-                        exit(1);
-                }
-                /* TODO: PUT ERROR FUNCTION */
+               {
+                   perror("Error:");
+                   exit(127); 
+               }
         }
         else
         {
