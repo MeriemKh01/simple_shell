@@ -114,7 +114,7 @@ int customGetline(info_t *info, char **ptr, size_t *length)
         if (s)
                 concatenateString(new_p, buf + i, k - i);
         else
-                copyString(new_p, buf + i, k - i + 1);
+                copy_String(new_p, buf + i, k - i + 1);
 
         s += k - i;
         i = k;

@@ -145,7 +145,7 @@ void printString(char *);
 int putCharacter(char);
 
 /* toem_exits.c */
-char *copyString(char *, char *, int);
+char *copy_String(char *, char *, int);
 char *concatenateString(char *, char *, int);
 char *findCharInString(char *, char);
 
