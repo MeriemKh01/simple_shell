@@ -2,38 +2,38 @@
 
 int hsh(info_t *info, char **av)
 {
-        ssize_t r = 0;
-        int builtin_ret = 0;
+    ssize_t r = 0;
+    int builtin_ret = 0;
 
-        while (r != -1 && builtin_ret != -2)
+    while (r != -1 && builtin_ret != -2)
+    {
+        initializeInfo(info);
+        if (checkInteractiveMode(info))
+            printString("$ ");
+        _custom_output_char(BUF_FLUSH);
+        r = getInput(info);
+        if (r != -1)
         {
-                initializeInfo(info);
-                if (checkInteractiveMode(info))
-                        printString("$ ");
-                _custom_output_char(BUF_FLUSH);
-                r = getInput(info);
-                if (r != -1)
-                {
-                        configureInfo(info, av);
-                        builtin_ret = find_builtin_command(info);
-                        if (builtin_ret == -1)
-                                find_shell_command(info);
-                }
-                else if (checkInteractiveMode(info))
-                        putCharacter('\n');
-                releaseInfo(info, 0);
+            configureInfo(info, av);
+            builtin_ret = find_builtin_command(info);
+            if (builtin_ret == -1)
+                fork_shell_command(info);
         }
-        record_history(info);
-        releaseInfo(info, 1);
-        if (!checkInteractiveMode(info) && info->status)
-                exit(info->status);
-        if (builtin_ret == -2)
-        {
-                if (info->err_num == -1)
-                        exit(info->status);
-                exit(info->err_num);
-        }
-        return (builtin_ret);
+        else if (checkInteractiveMode(info))
+            putCharacter('\n');
+        releaseInfo(info, 0);
+    }
+    record_history(info);
+    releaseInfo(info, 1);
+    if (!checkInteractiveMode(info) && info->status)
+        exit(info->status);
+    if (builtin_ret == -2)
+    {
+        if (info->err_num == -1)
+            exit(info->status);
+        exit(info->err_num);
+    }
+    return (builtin_ret);
 }
 
 int find_builtin_command(info_t *info)
