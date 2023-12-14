@@ -59,6 +59,13 @@ ssize_t getInput(info_t *info)
                                 break;
                         j++;
                 }
+                
+                if (i == j)
+                    {
+                        i = j = len = 0; /* reset position and length */
+                        info->cmd_buf_type = CMD_NORM;
+                        return -1; /* Indicate empty line */
+                    }
 
                 i = j + 1; /* increment past nulled ';'' */
                 if (i >= len) /* reached end of buffer? */
